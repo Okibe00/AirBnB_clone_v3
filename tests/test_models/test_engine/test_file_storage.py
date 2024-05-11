@@ -30,6 +30,18 @@ class TestFileStorageDocs(unittest.TestCase):
         """Set up for the doc tests"""
         cls.fs_f = inspect.getmembers(FileStorage, inspect.isfunction)
 
+    def test_get_method(self):
+        '''test the get class method'''
+        new_city = City(name='Lagos')
+        city_id = new_city.id
+        storage = FileStorage()
+        storage.new(new_city)
+        storage.save()
+        self.assertIsNotNone(storage.get('City', city_id))
+        self.assertIsNone(storage.get('House', city_id))
+        self.assertIsNone(storage.get('City', '2de03c2d-cebaa8cecdd'))
+        self.assertIsNone(storage.get('', ''))
+
     def test_pep8_conformance_file_storage(self):
         """Test that models/engine/file_storage.py conforms to PEP8."""
         pep8s = pep8.StyleGuide(quiet=True)
