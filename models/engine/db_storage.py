@@ -83,16 +83,16 @@ class DBStorage:
         if cls and id:
             '''[{cls.id: <obj>}]'''
             key = f'{cls}.{id}'
-            obj_list = self.all(cls)
-            for obj in obj_list:
-                val = obj.get(key, 0)
-                if val:
-                    return obj[key]
+            obj_dict = self.all(cls)
+            obj = obj_dict.get(key, 0)
+            if obj:
+                return obj
 
-            return None
+        return None
 
     def count(self, cls=None):
         '''count the number of obj in storage'''
         count = 0
         for i in self.all(cls):
             count = count + 1
+        return count
