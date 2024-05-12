@@ -30,11 +30,13 @@ class TestFileStorageDocs(unittest.TestCase):
         """Set up for the doc tests"""
         cls.fs_f = inspect.getmembers(FileStorage, inspect.isfunction)
 
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_count(self):
         '''test the count method'''
         storage = FileStorage()
         self.assertTrue(storage.count() >= 0)
 
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_get_method(self):
         '''test the get class method'''
         new_city = City(name='Lagos')
