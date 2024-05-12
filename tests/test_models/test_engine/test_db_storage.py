@@ -67,6 +67,25 @@ test_db_storage.py'])
             self.assertTrue(len(func[1].__doc__) >= 1,
                             "{:s} method needs a docstring".format(func[0]))
 
+    @unittest.skipIf(models.storage_t == 'db', "not testing db storage")
+    def test_count(self):
+        '''test the count method'''
+        storage = DBStorage()
+        self.assertTrue(storage.count() >= 0)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing db storage")
+    def test_get(self):
+        '''testing the get method'''
+        new_city = City(name='CAVEMAN')
+        city_id = new_city.id
+        storage = DBStorage()
+        storage.new(new_city)
+        storage.save()
+        self.assertIsNotNone(storage.get('City', city_id))
+        self.assertIsNone(storage.get('House', city_id))
+        self.assertIsNone(storage.get('City', '2de03c2d-cebaa8cecdd'))
+        self.assertIsNone(storage.get('', ''))
+
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
